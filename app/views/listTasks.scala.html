@@ -1,0 +1,10 @@
+@(testArgList: Seq[String], form: Form[TaskData])
+
+@helper.form(routes.ListController.addToList) {
+    @helper.inputText(form("taskName"))
+    @helper.inputText(form("status"))
+    <button type="submit">Add task</button>
+}
+@for(testArg <- testArgList) {
+<p>@testArg</p>
+}
