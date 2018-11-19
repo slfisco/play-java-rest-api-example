@@ -5,6 +5,14 @@
   <head>
     <meta charset="utf-8">
     <title>Play REST API</title>
+      <script type="text/javascript" src="@routes.Assets.at("/javascripts/jquery-3.3.1.min.js")"></script>
+      <script>
+      function addTask() {
+		var x = $("form").serializeArray();
+		alert("test");
+		alert(JSON.stringify(x));
+        }
+   </script>
   </head>
 
   <body>
@@ -35,5 +43,13 @@
   You can always look at the API directly: <a href="/v1/posts">/v1/posts</a>
 </p>
 
+  <form>
+      Task name:
+      <input type="text" name="taskname"><br>
+      Status:
+      <input type="checkbox" name="complete"><br>
+  </form>
+  <br>
+  <button type="button" onclick="addTask()">Run function</button>
   </body>
 </html>

@@ -1,3 +1,6 @@
 GET     /                           controllers.HomeController.index
+GET     /testRoute                  controllers.ListController.listArgs
+POST    /testRoute                  controllers.ListController.addToList
 
 ->     /v1/posts                    posts.Routes
+GET /assets/*file   controllers.Assets.at(path="/public", file)
