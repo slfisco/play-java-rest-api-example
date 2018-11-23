@@ -1,0 +1,9 @@
+@(sampleJson: String)
+
+@import play.api.libs.json._
+@defining(Json.parse(sampleJson)) { parsedJson =>
+<p>@parsedJson</p>
+}
+
+@*"{\"firstName\":\"Foo\", \"lastName\":\"Bar\", \"age\":13}"*@
+

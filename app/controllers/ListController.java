@@ -5,6 +5,8 @@ import static play.libs.Scala.asScala;
 import play.data.Form;
 import play.data.FormFactory;
 import javax.inject.Inject;
+import play.libs.Json;
+import com.fasterxml.jackson.databind.JsonNode;
 
 public class ListController extends Controller {
     private Form<TaskData> form;
@@ -22,5 +24,19 @@ public class ListController extends Controller {
     public Result addToList() {
         // fill this in
         return ok(views.html.index.render());
+    }
+    public Result parseJson() {
+        JsonNode testJson = Json.parse("[{\"firstName\":\"Foo\", \"lastName\":\"Bar\", \"age\":13},{\"firstName\":\"Cat\", \"lastName\":\"Dog\", \"age\":5}]");
+        for (int i = 0; i < 2; ++i) {
+            //return ok(views.html.parseJson.render(Json.stringify(testJson)));//views.html.listTasks.render(testJson));
+            renderMultipleTemplates();
+        }
+        return ok(views.html.index.render());
+    }
+    public Result renderMultipleTemplates() {
+        return ok(views.html.index.render());
+    }
+    public Result jqueryJson() {
+        return ok(views.html.jqueryJson.render());
     }
 }

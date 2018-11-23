@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="@routes.Assets.at("/javascripts/jquery-3.3.1.min.js")"></script>
+      <script>
+      function parseJson() {
+      var json = JSON.parse('{ "employees" : [ {"firstName":"John", "lastName":"Doe"}, {"firstName":"Anna", "lastName":"Smith"}]}')
+      var firstNames = document.getElementsByClassName("firstNames")[0];
+      for(var i = 0; i < json.employees.length; i++) {
+        var p = document.createElement("p");
+        p.innerHTML = json.employees[i].firstName;
+        firstNames.appendChild(p);
+        }
+        }
+   </script>
+</head>
+<body onload="parseJson()">
+<div class="firstNames"></div>
+</body>
+</html>
