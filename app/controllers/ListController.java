@@ -37,6 +37,8 @@ public class ListController extends Controller {
         return ok(views.html.index.render());
     }
     public Result jqueryJson() {
-        return ok(views.html.jqueryJson.render());
+        JsonNode json = Json.parse("{ \"employees\" : [ {\"firstName\":\"John\", \"lastName\":\"Doe\"}, {\"firstName\":\"Anna\", \"lastName\":\"Smith\"}]}");
+        String jsonString = Json.stringify(json);
+        return ok(views.html.jqueryJson.render(jsonString));
     }
 }

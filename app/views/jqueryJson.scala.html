@@ -1,3 +1,4 @@
+@(jsonString: String)
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,7 +7,10 @@
     <script type="text/javascript" src="@routes.Assets.at("/javascripts/jquery-3.3.1.min.js")"></script>
       <script>
       function parseJson() {
-      var json = JSON.parse('{ "employees" : [ {"firstName":"John", "lastName":"Doe"}, {"firstName":"Anna", "lastName":"Smith"}]}')
+      //var json = JSON.parse('{ "employees" : [ {"firstName":"John", "lastName":"Doe"}, {"firstName":"Anna", "lastName":"Smith"}]}')
+      var jsonString = "@jsonString";
+      //string passed should look like this: "{ \"employees\" : [ {\"firstName\":\"John\", \"lastName\":\"Doe\"}, {\"firstName\":\"Anna\", \"lastName\":\"Smith\"}]}"
+      var json = JSON.parse(jsonString.replace(/&quot;/g,'"'));
       var firstNames = document.getElementsByClassName("firstNames")[0];
       for(var i = 0; i < json.employees.length; i++) {
         var p = document.createElement("p");
