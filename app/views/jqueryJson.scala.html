@@ -1,26 +1,37 @@
-@(jsonString: String)
+@(jsonString: String, form: Form[TaskData])
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <script type="text/javascript" src="@routes.Assets.at("/javascripts/jquery-3.3.1.min.js")"></script>
+    <script type="text/javascript" src="@routes.Assets.at("/javascripts/jquery-3.3.1.min.js")"></script> @*doesn't actually use jquery?*@
       <script>
       function parseJson() {
-      //var json = JSON.parse('{ "employees" : [ {"firstName":"John", "lastName":"Doe"}, {"firstName":"Anna", "lastName":"Smith"}]}')
       var jsonString = "@jsonString";
-      //string passed should look like this: "{ \"employees\" : [ {\"firstName\":\"John\", \"lastName\":\"Doe\"}, {\"firstName\":\"Anna\", \"lastName\":\"Smith\"}]}"
       var json = JSON.parse(jsonString.replace(/&quot;/g,'"'));
       var firstNames = document.getElementsByClassName("firstNames")[0];
       for(var i = 0; i < json.employees.length; i++) {
         var p = document.createElement("p");
         p.innerHTML = json.employees[i].firstName;
         firstNames.appendChild(p);
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = i;
+        checkbox.name = "checkbox" + String(i);
+        checkbox.onclick = function() {
+        location.href='@controllers.routes.ListController.addToList';
+        };
+        firstNames.appendChild(checkbox);
         }
         }
    </script>
 </head>
 <body onload="parseJson()">
 <div class="firstNames"></div>
+@helper.form(routes.ListController.addToList) {
+@helper.inputText(form("taskName"))
+@helper.inputText(form("status"))
+<button type="submit">Add task</button>
+}
 </body>
 </html>
