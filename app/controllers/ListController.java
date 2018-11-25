@@ -41,4 +41,9 @@ public class ListController extends Controller {
         String jsonString = Json.stringify(json);
         return ok(views.html.jqueryJson.render(jsonString, form));
     }
+    public Result fetchTest() {
+        JsonNode json = Json.parse("{\"title\" : \"title 7\", \"body\" : \"test3\"}");
+        String jsonString = Json.stringify(json);
+        return ok(views.html.fetchTest.render(jsonString));
+    }
 }

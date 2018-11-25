@@ -3,6 +3,7 @@ GET     /testRoute                  controllers.ListController.listArgs
 POST    /testRoute                  controllers.ListController.addToList
 GET     /parseJson                  controllers.ListController.parseJson
 GET     /jqueryJson                 controllers.ListController.jqueryJson
+GET     /fetchTest                  controllers.ListController.fetchTest
 
 ->     /v1/posts                    posts.Routes
 GET /assets/*file   controllers.Assets.at(path="/public", file)
