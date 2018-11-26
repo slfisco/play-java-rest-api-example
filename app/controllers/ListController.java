@@ -1,6 +1,16 @@
 package controllers;
 import play.mvc.*;
+
+import java.net.URL;
+import java.net.HttpURLConnection;
 import java.util.*;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
+import java.io.IOException;
+import play.Logger;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 import static play.libs.Scala.asScala;
 import play.data.Form;
 import play.data.FormFactory;
@@ -10,6 +20,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 
 public class ListController extends Controller {
     private Form<TaskData> form;
+    //private static final java.util.logging.Logger LOGGER = Logger.getLogger("testLogger");
     @Inject
     public ListController(FormFactory formFactory) {
         this.form = formFactory.form(TaskData.class);
@@ -45,5 +56,32 @@ public class ListController extends Controller {
         JsonNode json = Json.parse("{\"title\" : \"title 7\", \"body\" : \"test3\"}");
         String jsonString = Json.stringify(json);
         return ok(views.html.fetchTest.render(jsonString));
+    }
+    public Result httpRequestTest() {
+        try {
+            URL url = new URL("http://localhost:9000/v1/posts");
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("GET");
+            //con.setRequestProperty("Content-Type", "application/json");
+            int status = con.getResponseCode();
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            while ((inputLine = in.readLine()) != null) {
+                Logger.error(inputLine);
+            }
+            in.close();
+            con.disconnect();
+            Logger.error("successful http request");
+        }
+        catch (Exception e) {
+            Logger.error("error with http request");
+        }
+        JsonNode json = Json.parse("{ \"employees\" : [ {\"firstName\":\"John\", \"lastName\":\"Doe\"}, {\"firstName\":\"Anna\", \"lastName\":\"Smith\"}]}");
+        String jsonString = Json.stringify(json);
+        return ok(views.html.jqueryJson.render(jsonString, form));
+    }
+    public Result loggerTest() {
+        Logger.error("logging an error");
+        return ok(views.html.index.render());
     }
 }
