@@ -6,6 +6,7 @@ GET     /jqueryJson                 controllers.ListController.jqueryJson
 GET     /fetchTest                  controllers.ListController.fetchTest
 GET     /httpRequestTest            controllers.ListController.httpRequestTest
 GET     /loggerTest                 controllers.ListController.loggerTest
+#GET     /playHttpRequest            controllers.ListController.playHttpRequest
 
 ->     /v1/posts                    posts.Routes
 GET /assets/*file   controllers.Assets.at(path="/public", file)

@@ -10,6 +10,9 @@ import java.io.IOException;
 import play.Logger;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import play.libs.ws.*;
+import java.util.concurrent.CompletionStage;
+import java.io.DataOutputStream;
 
 import static play.libs.Scala.asScala;
 import play.data.Form;
@@ -18,9 +21,16 @@ import javax.inject.Inject;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.JsonNode;
 
-public class ListController extends Controller {
+public class ListController extends Controller /*implements WSBodyReadables, WSBodyWritables*/ {
     private Form<TaskData> form;
     //private static final java.util.logging.Logger LOGGER = Logger.getLogger("testLogger");
+   /* private final WSClient ws;
+
+    @Inject
+    public ListController(WSClient ws) {
+        this.ws = ws;
+    }
+*/
     @Inject
     public ListController(FormFactory formFactory) {
         this.form = formFactory.form(TaskData.class);
@@ -58,11 +68,21 @@ public class ListController extends Controller {
         return ok(views.html.fetchTest.render(jsonString));
     }
     public Result httpRequestTest() {
+        JsonNode json = Json.parse("{\"title\" : \"title 7\", \"body\" : \"test3\"}");
         try {
+            byte[] bytes = Json.stringify(json).getBytes();
             URL url = new URL("http://localhost:9000/v1/posts");
             HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            //con.setRequestProperty("Content-Type", "application/json");
+            con.setRequestMethod("POST");
+            con.addRequestProperty("Accept", "application/json");
+            con.addRequestProperty("Connection", "close");
+            con.addRequestProperty("Content-Length", Integer.toString(bytes.length));
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setDoOutput(true);
+            DataOutputStream outputStream = new DataOutputStream(con.getOutputStream());
+            outputStream.write(bytes);
+            outputStream.flush();
+            outputStream.close();
             int status = con.getResponseCode();
             BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
             String inputLine;
@@ -76,7 +96,6 @@ public class ListController extends Controller {
         catch (Exception e) {
             Logger.error("error with http request");
         }
-        JsonNode json = Json.parse("{ \"employees\" : [ {\"firstName\":\"John\", \"lastName\":\"Doe\"}, {\"firstName\":\"Anna\", \"lastName\":\"Smith\"}]}");
         String jsonString = Json.stringify(json);
         return ok(views.html.jqueryJson.render(jsonString, form));
     }
@@ -84,4 +103,8 @@ public class ListController extends Controller {
         Logger.error("logging an error");
         return ok(views.html.index.render());
     }
+/*    public Result playHttpRequest() {
+        return ok(views.html.index.render());
+    }
+    */
 }

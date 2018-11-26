@@ -29,6 +29,7 @@ lazy val root = (project in file(".")).enablePlugins(PlayJava, GatlingPlugin).co
   )
 
 libraryDependencies += guice
+libraryDependencies ++= Seq(ws)
 libraryDependencies += javaJpa
 libraryDependencies += "com.h2database" % "h2" % "1.4.197"
 
