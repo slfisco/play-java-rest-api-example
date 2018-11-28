@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    @*<taskName>Title</taskName>*@
     <script type="text/javascript" src="@routes.Assets.at("/javascripts/jquery-3.3.1.min.js")"></script> @*doesn't actually use jquery?*@
       <script>
       function parseJson() {
@@ -28,10 +28,11 @@
 </head>
 <body onload="parseJson()">
 <div class="firstNames"></div>
-@helper.form(routes.ListController.addToList) {
+@helper.form(routes.ListController.httpRequestTest) {
 @helper.inputText(form("taskName"))
 @helper.inputText(form("status"))
 <button type="submit">Add task</button>
 }
+@jsonString
 </body>
 </html>

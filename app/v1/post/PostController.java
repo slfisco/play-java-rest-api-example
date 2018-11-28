@@ -28,6 +28,13 @@ public class PostController extends Controller {
             return ok(Json.toJson(postList));
         }, ec.current());
     }
+    /*public CompletionStage<JsonNode> getJsonString() {
+        return handler.find().thenApplyAsync(posts -> {
+            final List<PostResource> postList = posts.collect(Collectors.toList());
+            return Json.toJson(postList);
+        }, ec.current());
+    }
+    */
 
     public CompletionStage<Result> show(String id) {
         return handler.lookup(id).thenApplyAsync(optionalResource -> {

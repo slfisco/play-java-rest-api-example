@@ -20,6 +20,7 @@ import play.data.FormFactory;
 import javax.inject.Inject;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 public class ListController extends Controller /*implements WSBodyReadables, WSBodyWritables*/ {
     private Form<TaskData> form;
@@ -68,7 +69,14 @@ public class ListController extends Controller /*implements WSBodyReadables, WSB
         return ok(views.html.fetchTest.render(jsonString));
     }
     public Result httpRequestTest() {
-        JsonNode json = Json.parse("{\"title\" : \"title 7\", \"body\" : \"test3\"}");
+        //JsonNode json = Json.parse("{\"title\" : \"title 15\", \"body\" : \"test9\"}");
+        final Form<TaskData> boundForm = form.bindFromRequest();
+        TaskData data = boundForm.get();
+        Logger.error(data.taskName);
+        ObjectNode json = Json.newObject();
+        json.put("taskName", data.taskName);
+        json.put("status", data.status);
+        //CONVERT FORM TO JSON
         try {
             byte[] bytes = Json.stringify(json).getBytes();
             URL url = new URL("http://localhost:9000/v1/posts");
@@ -96,8 +104,23 @@ public class ListController extends Controller /*implements WSBodyReadables, WSB
         catch (Exception e) {
             Logger.error("error with http request");
         }
-        String jsonString = Json.stringify(json);
-        return ok(views.html.jqueryJson.render(jsonString, form));
+        //now make get request to get json for jqueryJson
+        try {
+            //a ton of redundancy
+            URL url = new URL("http://localhost:9000/v1/posts");
+            HttpURLConnection con2 = (HttpURLConnection) url.openConnection();
+            con2.setRequestMethod("GET");
+            BufferedReader in2 = new BufferedReader(new InputStreamReader(con2.getInputStream()));
+            String jsonString = in2.readLine();
+                Logger.error(jsonString);
+            in2.close();
+            con2.disconnect();
+            return ok(views.html.jqueryJson.render(jsonString, form));
+        }
+        catch (Exception e) {
+            Logger.error("error with http request");
+        }
+        return ok("error: http request failed");
     }
     public Result loggerTest() {
         Logger.error("logging an error");
@@ -107,4 +130,21 @@ public class ListController extends Controller /*implements WSBodyReadables, WSB
         return ok(views.html.index.render());
     }
     */
+    public Result getFormInfo() {
+        final Form<TaskData> boundForm = form.bindFromRequest();
+        TaskData data = boundForm.get();
+        Logger.error(data.taskName);
+        return ok(views.html.index.render());
+    }
+    public Result testImportPackage() {
+        /*try {
+            v1.post.PostController postController =  new v1.post.PostController();
+                    //.getJsonString().toCompletableFuture().get();
+        }
+        catch (Exception e) {
+            Logger.error("error getting json");
+        }
+        */
+        return ok("done");
+    }
 }

@@ -6,24 +6,24 @@ package v1.post;
 public class PostResource {
     private String id;
     private String link;
-    private String title;
-    private String body;
+    private String taskName;
+    private String status;
 
     public PostResource() {
     }
 
-    public PostResource(String id, String link, String title, String body) {
+    public PostResource(String id, String link, String taskName, String status) {
         this.id = id;
         this.link = link;
-        this.title = title;
-        this.body = body;
+        this.taskName = taskName;
+        this.status = status;
     }
 
     public PostResource(PostData data, String link) {
         this.id = data.id.toString();
         this.link = link;
-        this.title = data.title;
-        this.body = data.body;
+        this.taskName = data.title;
+        this.status = data.body;
     }
 
     public String getId() {
@@ -34,12 +34,12 @@ public class PostResource {
         return link;
     }
 
-    public String getTitle() {
-        return title;
+    public String getTaskName() {
+        return taskName;
     }
 
-    public String getBody() {
-        return body;
+    public String getStatus() {
+        return status;
     }
 
 }
