@@ -75,7 +75,7 @@ public class ListController extends Controller /*implements WSBodyReadables, WSB
         Logger.error(data.taskName);
         ObjectNode json = Json.newObject();
         json.put("taskName", data.taskName);
-        json.put("status", data.status);
+        json.put("status", false);
         //CONVERT FORM TO JSON
         try {
             byte[] bytes = Json.stringify(json).getBytes();

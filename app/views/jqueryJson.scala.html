@@ -7,8 +7,10 @@
     <script type="text/javascript" src="@routes.Assets.at("/javascripts/jquery-3.3.1.min.js")"></script> @*doesn't actually use jquery?*@
       <script>
       function parseJson() {
+      /*
+      //rewrite this function
       var jsonString = "@jsonString";
-      var json = JSON.parse(jsonString.replace(/&quot;/g,'"'));
+      var json = JSON.parse(jsonString.replace(/&quot;/g,'"')); //why does it convert to &quot
       var firstNames = document.getElementsByClassName("firstNames")[0];
       for(var i = 0; i < json.employees.length; i++) {
         var p = document.createElement("p");
@@ -23,14 +25,40 @@
         };
         firstNames.appendChild(checkbox);
         }
+        //rewrite
+        */
+        var jsonString = "@jsonString";
+        var json = JSON.parse(jsonString.replace(/&quot;/g,'"'));
+        var taskNamesDiv = document.getElementsByClassName("taskNames")[0];
+        for (i in json) {
+            var p = document.createElement("p");
+            p.innerHTML = json[i].taskName;
+            taskNamesDiv.appendChild(p);
+            var checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = i;
+            checkbox.name = "checkbox" + String(i);
+            checkbox.onclick = function() {
+                location.href='@controllers.routes.ListController.addToList'; //replace with proper function
+                };
+            if (json[i].status) {
+                checkbox.checked = true;
+                }
+            else {
+                checkbox.checked = false;
+                }
+            taskNamesDiv.appendChild(checkbox);
+            }
+        // [{"id":"1","link":"http://localhost:9000/v1/posts/1","taskName":"test6","status":"tesss"}]
+
         }
    </script>
 </head>
 <body onload="parseJson()">
-<div class="firstNames"></div>
+<div class="taskNames"></div>
 @helper.form(routes.ListController.httpRequestTest) {
 @helper.inputText(form("taskName"))
-@helper.inputText(form("status"))
+@* @helper.inputText(form("status")) *@
 <button type="submit">Add task</button>
 }
 @jsonString

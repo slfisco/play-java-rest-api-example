@@ -22,8 +22,8 @@ public class PostResource {
     public PostResource(PostData data, String link) {
         this.id = data.id.toString();
         this.link = link;
-        this.taskName = data.title;
-        this.status = data.body;
+        this.taskName = data.taskName;
+        this.status = data.status;
     }
 
     public String getId() {

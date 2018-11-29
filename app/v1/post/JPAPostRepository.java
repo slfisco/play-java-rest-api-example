@@ -70,8 +70,8 @@ public class JPAPostRepository implements PostRepository {
     private Optional<PostData> modify(EntityManager em, Long id, PostData postData) throws InterruptedException {
         final PostData data = em.find(PostData.class, id);
         if (data != null) {
-            data.title = postData.title;
-            data.body = postData.body;
+            data.taskName = postData.taskName;
+            data.status = postData.status;
         }
         Thread.sleep(10000L);
         return Optional.ofNullable(data);

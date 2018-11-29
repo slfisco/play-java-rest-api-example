@@ -12,14 +12,14 @@ public class PostData {
     public PostData() {
     }
 
-    public PostData(String title, String body) {
-        this.title = title;
-        this.body = body;
+    public PostData(String taskName, String status) {
+        this.taskName = taskName;
+        this.status = status;
     }
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     public Long id;
-    public String title;
-    public String body;
+    public String taskName;
+    public String status;
 }
