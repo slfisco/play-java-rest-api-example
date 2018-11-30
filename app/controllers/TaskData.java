@@ -13,13 +13,4 @@ public class TaskData {
         this.taskName = taskName;
     }
 
-    //FORM WILL NO LONGER HANDLE STATUS INPUT. DEFAULT IS FALSE
-    /*public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-    */
 }

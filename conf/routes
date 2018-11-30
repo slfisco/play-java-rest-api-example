@@ -1,15 +1,8 @@
 GET     /                           controllers.HomeController.index
-GET     /testRoute                  controllers.ListController.listArgs
-POST    /testRoute                  controllers.ListController.addToList
-GET     /parseJson                  controllers.ListController.parseJson
-GET     /jqueryJson                 controllers.ListController.jqueryJson
-GET     /fetchTest                  controllers.ListController.fetchTest
-GET     /httpRequestTest            controllers.ListController.httpRequestTest
+GET     /testRoute                  controllers.ListController.addToList
+GET     /taskList                 controllers.ListController.jqueryJson
+POST    /taskList/addTask            controllers.ListController.httpRequestTest
 #GET     /httpRequestTest/:taskName/ controllers.ListController.httpRequestTest(taskName:String) #only necessary to add /:taskName/ if searching?
-GET     /loggerTest                 controllers.ListController.loggerTest
-#GET     /playHttpRequest            controllers.ListController.playHttpRequest
-GET     /getFormInfo                controllers.ListController.getFormInfo
-GET     /testImportPackage          controllers.ListController.testImportPackage
 
 ->     /v1/posts                    posts.Routes
 GET /assets/*file   controllers.Assets.at(path="/public", file)

@@ -58,8 +58,8 @@ public class JPAPostRepository implements PostRepository {
     }
 
     private Optional<PostData> lookup(EntityManager em, Long id) throws SQLException {
-        throw new SQLException("Call this to cause the circuit breaker to trip");
-        //return Optional.ofNullable(em.find(PostData.class, id));
+        //throw new SQLException("Call this to cause the circuit breaker to trip"); //why was this not commented out?...
+        return Optional.ofNullable(em.find(PostData.class, id)); //why was this commented out?....
     }
 
     private Stream<PostData> select(EntityManager em) {
@@ -73,7 +73,7 @@ public class JPAPostRepository implements PostRepository {
             data.taskName = postData.taskName;
             data.status = postData.status;
         }
-        Thread.sleep(10000L);
+        //Thread.sleep(10000L);  //why was this also commented out?...
         return Optional.ofNullable(data);
     }
 

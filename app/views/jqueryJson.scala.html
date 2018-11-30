@@ -7,26 +7,6 @@
     <script type="text/javascript" src="@routes.Assets.at("/javascripts/jquery-3.3.1.min.js")"></script> @*doesn't actually use jquery?*@
       <script>
       function parseJson() {
-      /*
-      //rewrite this function
-      var jsonString = "@jsonString";
-      var json = JSON.parse(jsonString.replace(/&quot;/g,'"')); //why does it convert to &quot
-      var firstNames = document.getElementsByClassName("firstNames")[0];
-      for(var i = 0; i < json.employees.length; i++) {
-        var p = document.createElement("p");
-        p.innerHTML = json.employees[i].firstName;
-        firstNames.appendChild(p);
-        var checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.id = i;
-        checkbox.name = "checkbox" + String(i);
-        checkbox.onclick = function() {
-        location.href='@controllers.routes.ListController.addToList';
-        };
-        firstNames.appendChild(checkbox);
-        }
-        //rewrite
-        */
         var jsonString = "@jsonString";
         var json = JSON.parse(jsonString.replace(/&quot;/g,'"'));
         var taskNamesDiv = document.getElementsByClassName("taskNames")[0];
@@ -41,7 +21,7 @@
             checkbox.onclick = function() {
                 location.href='@controllers.routes.ListController.addToList'; //replace with proper function
                 };
-            if (json[i].status) {
+            if (json[i].status == "true") { //replace with boolean
                 checkbox.checked = true;
                 }
             else {
