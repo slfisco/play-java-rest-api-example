@@ -60,7 +60,7 @@ public class ListController extends Controller /*implements WSBodyReadables, WSB
             outputStream.flush();
             outputStream.close();
             int status = con.getResponseCode();
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream())); //don't need read out
             String inputLine;
             while ((inputLine = in.readLine()) != null) {
                 Logger.error(inputLine);
@@ -82,6 +82,7 @@ public class ListController extends Controller /*implements WSBodyReadables, WSB
             return ok("error: http request failed");
         }
     }
+    //make this more modular. could have request methods share variables/connections
     public String makeGETrequest() {
         try {
             //a ton of redundancy
@@ -96,8 +97,47 @@ public class ListController extends Controller /*implements WSBodyReadables, WSB
             return jsonString;
         }
         catch (Exception e) {
-            Logger.error("error with http request");
+            Logger.error("error with http request"); //make more specific
             return null;
         }
+    }
+
+    public void makePUTrequest(String jsonString,String id) {
+        try {
+            URL url = new URL("http://localhost:9000/v1/posts/" + id);
+            HttpURLConnection con = (HttpURLConnection) url.openConnection();
+            con.setRequestMethod("PUT");
+            byte[] bytes = jsonString.getBytes();
+            con.addRequestProperty("Accept", "application/json");
+            con.addRequestProperty("Connection", "close");
+            con.addRequestProperty("Content-Length", Integer.toString(bytes.length));
+            con.setRequestProperty("Content-Type", "application/json");
+            con.setDoOutput(true);
+            DataOutputStream outputStream = new DataOutputStream(con.getOutputStream());
+            outputStream.write(bytes);
+            outputStream.flush();
+            outputStream.close();
+            con.disconnect();
+            int responseStatus = con.getResponseCode();
+            Logger.error("put request complete and returned status " + responseStatus);
+        }
+        catch (Exception e) {
+            Logger.error("error with put request");
+        }
+    }
+    public Result update(String id) {
+        //final Form<TaskData> boundForm = form.bindFromRequest();
+        //TaskData data = boundForm.get();
+        JsonNode json = Json.parse(makeGETrequest()); //get entire jsonString so we have other fields
+        //example json:
+        // {"id":"2","link":"http://localhost:9000/v1/posts/2","taskName":"test2","status":"false","updateLink":"http://localhost:9000/v1/posts/2/update"},
+        // {"id":"3","link":"http://localhost:9000/v1/posts/3","taskName":"test5","status":"false","updateLink":"http://localhost:9000/v1/posts/3/update"}]
+        ObjectNode requestBody = Json.newObject();
+        requestBody.put("taskName", "do dishes"); //update with value from json
+        requestBody.put("status", "true");
+
+        makePUTrequest(Json.stringify(requestBody),id);
+        String jsonString = makeGETrequest();
+        return ok(views.html.jqueryJson.render(jsonString, form));
     }
 }

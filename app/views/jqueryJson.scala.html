@@ -18,9 +18,9 @@
             checkbox.type = "checkbox";
             checkbox.id = i;
             checkbox.name = "checkbox" + String(i);
-            checkbox.onclick = function() {
-                location.href='@controllers.routes.ListController.addToList'; //replace with proper function
-                };
+            checkbox.onclick = function(i) {
+                location.href= json[i].updateLink; //replace with proper function
+                }.bind(this, i); //prevent outer scope i from overwriting
             if (json[i].status == "true") { //replace with boolean
                 checkbox.checked = true;
                 }

@@ -2,6 +2,7 @@ GET     /                           controllers.HomeController.index
 GET     /testRoute                  controllers.ListController.addToList
 GET     /taskList                 controllers.ListController.jqueryJson
 POST    /taskList/addTask            controllers.ListController.httpRequestTest
+GET     /v1/posts/:id/update         controllers.ListController.update(id: String)
 #GET     /httpRequestTest/:taskName/ controllers.ListController.httpRequestTest(taskName:String) #only necessary to add /:taskName/ if searching?
 
 ->     /v1/posts                    posts.Routes
