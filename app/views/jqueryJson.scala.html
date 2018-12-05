@@ -35,12 +35,14 @@
    </script>
 </head>
 <body onload="parseJson()">
+<h3>Task List</h3>
 <div class="taskNames"></div>
+<h4>Enter new task</h4>
 @helper.form(routes.ListController.httpRequestTest) {
-@helper.inputText(form("taskName"))
-@* @helper.inputText(form("status")) *@
+@helper.inputText(form("taskName"), '_label -> "Task Name")
+
 <button type="submit">Add task</button>
 }
-@jsonString
+@* @jsonString    *@
 </body>
 </html>

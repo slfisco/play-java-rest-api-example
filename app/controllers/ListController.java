@@ -17,6 +17,7 @@ import javax.inject.Inject;
 import play.libs.Json;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 public class ListController extends Controller /*implements WSBodyReadables, WSBodyWritables*/ {
     private Form<TaskData> form;
@@ -126,18 +127,72 @@ public class ListController extends Controller /*implements WSBodyReadables, WSB
         }
     }
     public Result update(String id) {
-        //final Form<TaskData> boundForm = form.bindFromRequest();
-        //TaskData data = boundForm.get();
-        JsonNode json = Json.parse(makeGETrequest()); //get entire jsonString so we have other fields
+        /*
+        String newjsonString = makeGETrequest(); //get entire jsonString so we have other fields
+        JsonNode rootnode = Json.parse(newjsonString);//mapper.readTree(newjsonString); //not sure this is necessary
+        Iterator<JsonNode> i = rootnode.elements();
+        String status = "";
+        String taskName = "";
+
+            while (i.hasNext()) {
+                JsonNode element = i.next();
+                if (element.path("id").asText().equals(id)) {
+                    Logger.error("the ID matches");
+                    status = element.path("status").asText();
+                    Logger.error("type of status is: " + status.getClass().getName());
+                    Logger.error("status is :" + status);
+                    taskName = element.path("taskName").asText();
+                    Logger.error("taskName is :" + taskName);
+                }
+        }
+        */
+        jsonFields jsonfields = getJsonFields(id);
+        Logger.error("JSONFIELDS.STATUS :"+ jsonfields.status);
         //example json:
         // {"id":"2","link":"http://localhost:9000/v1/posts/2","taskName":"test2","status":"false","updateLink":"http://localhost:9000/v1/posts/2/update"},
         // {"id":"3","link":"http://localhost:9000/v1/posts/3","taskName":"test5","status":"false","updateLink":"http://localhost:9000/v1/posts/3/update"}]
         ObjectNode requestBody = Json.newObject();
-        requestBody.put("taskName", "do dishes"); //update with value from json
-        requestBody.put("status", "true");
+        requestBody.put("taskName", jsonfields.taskName); //update with value from json
+        if (jsonfields.status.equals("false")) {
+            requestBody.put("status", "true");
+        }
+        else if (jsonfields.status.equals("true")) {
+            requestBody.put("status", "false");
+        }
 
         makePUTrequest(Json.stringify(requestBody),id);
         String jsonString = makeGETrequest();
         return ok(views.html.jqueryJson.render(jsonString, form));
+    }
+    private static class jsonFields {
+        String taskName;
+        String status;
+    }
+    private jsonFields getJsonFields(String id) {
+        String newjsonString = makeGETrequest(); //get entire jsonString so we have other fields
+        JsonNode rootnode = Json.parse(newjsonString);//mapper.readTree(newjsonString); //not sure this is necessary
+        //JsonNode taskNameNode = rootnode.path(0).path("id");
+        //Logger.error("testing path " + taskNameNode.textValue());
+        Iterator<JsonNode> i = rootnode.elements();
+        jsonFields jsonfields = new jsonFields();
+
+        while (i.hasNext()) {
+            JsonNode element = i.next();
+                /*Logger.error("this element is :" + element);
+                Logger.error("the id is :" + element.path("id"));
+                Logger.error("looking for id :" + id);
+                */
+            if (element.path("id").asText().equals(id)) {
+                Logger.error("the ID matches");
+                jsonfields.status = element.path("status").asText();
+                Logger.error("type of status is: " + jsonfields.status.getClass().getName());
+                Logger.error("status is :" + jsonfields.status);
+                jsonfields.taskName = element.path("taskName").asText();
+                Logger.error("taskName is :" + jsonfields.taskName);
+                return jsonfields;
+            }
+        }
+        Logger.error("id not found");
+        return null;
     }
 }
