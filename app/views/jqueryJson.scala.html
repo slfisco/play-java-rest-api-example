@@ -17,9 +17,9 @@
             var checkbox = document.createElement("input");
             checkbox.type = "checkbox";
             checkbox.id = i;
-            checkbox.name = "checkbox" + String(i);
+            checkbox.name = "checkbox" + String(i); //not used
             checkbox.onclick = function(i) {
-                location.href= json[i].updateLink; //replace with proper function
+                location.href= json[i].updateLink;
                 }.bind(this, i); //prevent outer scope i from overwriting
             if (json[i].status == "true") { //replace with boolean
                 checkbox.checked = true;
@@ -27,9 +27,18 @@
             else {
                 checkbox.checked = false;
                 }
+            //adding deletion button
+            var deleteButton = document.createElement("input");
+            deleteButton.type = "button";
+            deleteButton.id  = i;
+            deleteButton.name = "deleteButton" + String(i);
+            deleteButton.value = "Delete Task";
+            deleteButton.onclick = function(i) {
+                location.href= json[i].updateLink; //replace with delete controller call
+            }.bind(this, i);
             taskNamesDiv.appendChild(checkbox);
+            taskNamesDiv.appendChild(deleteButton);
             }
-        // [{"id":"1","link":"http://localhost:9000/v1/posts/1","taskName":"test6","status":"tesss"}]
 
         }
    </script>

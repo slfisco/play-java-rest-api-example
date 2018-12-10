@@ -32,6 +32,9 @@ libraryDependencies += guice
 libraryDependencies ++= Seq(ws)
 libraryDependencies += javaJpa
 libraryDependencies += "com.h2database" % "h2" % "1.4.197"
+//libraryDependencies += jdbc
+//libraryDependencies += "org.postgresql" % "postgresql" % "42.2.2"
+
 
 libraryDependencies += "org.hibernate" % "hibernate-core" % "5.2.17.Final"
 libraryDependencies += "io.dropwizard.metrics" % "metrics-core" % "3.2.1"
